@@ -47,7 +47,7 @@ In addition to the basic call above, there are a few optional input arguments: b
 Here are a few examples:
 
 ```bash
-# train with standard convolutions, 16 bits and 120 epochs
+# train with standard convolutions, 16 bits for 120 epochs
 python train.py --use_normal_conv --Q --bits 16 --epochs 120
 
 # train a WA model with static transforms using F(2x2, 3x3) and using CPU only
@@ -55,6 +55,16 @@ python train.py --static --F 2 --use_cpu
 
 # train a WA model with learnable transforms, F(4x4, 3x3), 8 bits and width multiplier 0.25 
 python train.py --flex --F 4 --Q --mult 0.25
+```
+
+The core contribution of this work (higher resilience to quantization of WA models when the transforms are learnt) can be quickly observed by running the following experiment and comparing each result:
+
+```bash
+python train.py --use_normal_conv --Q --bits 8 --epochs 120 # reaches ~92% acc
+
+python train.py --static --Q --bits 8 --epochs 120 # reaches ~78% acc
+
+python train.py --flex --Q --bits 8 --epochs 120 # reaches ~91% acc
 ```
 
 Launching the training will print a table summarising how your model has been configured:
